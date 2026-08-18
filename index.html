@@ -371,7 +371,47 @@
         </span>
       </div>
     </div>
+<div class="signup-section">
+  <p class="signup-title">Get Future Offers &amp; Updates</p>
+  <p class="signup-sub">Share your WhatsApp number to stay updated on new deals and promotions — totally optional.</p>
+  <form id="signupForm">
+    <input type="tel" id="signupPhone" placeholder="WhatsApp / Mobile Number">
+    <label class="signup-consent">
+      <input type="checkbox" id="signupConsent">
+      <span>I agree to receive promotional offers via WhatsApp/SMS.</span>
+    </label>
+    <button type="submit" id="signupBtn">Submit</button>
+    <div class="signup-status" id="signupStatus"></div>
+  </form>
+</div>
 
+<style>
+  .signup-section{ margin-top:38px; padding:22px; border:1.5px solid var(--gold-2); border-radius:12px; text-align:center; }
+  .signup-title{ font-family:'Playfair Display',serif; font-weight:600; font-size:17px; color:var(--wine); margin:0 0 6px; }
+  .signup-sub{ font-size:13px; color:var(--muted); margin:0 0 16px; }
+  #signupForm{ display:flex; flex-direction:column; gap:12px; }
+  #signupPhone{ font-family:'Cormorant Garamond',serif; font-size:16px; padding:12px 14px; border:1.5px solid var(--gold-2); border-radius:8px; background:var(--bg); color:var(--wine); outline:none; }
+  .signup-consent{ display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:12px; color:var(--muted); }
+  .signup-consent input{ margin-top:3px; accent-color:var(--wine); }
+  #signupBtn{ font-family:'Playfair Display',serif; font-weight:600; font-size:15px; color:var(--gold-3); background:linear-gradient(135deg,var(--wine),var(--wine-deep)); border:1.5px solid var(--gold-2); border-radius:8px; padding:12px; cursor:pointer; }
+  .signup-status{ font-size:13px; color:var(--gold-1); min-height:16px; }
+</style>
+
+<script>
+  document.getElementById('signupForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var phone = document.getElementById('signupPhone').value.trim();
+    var status = document.getElementById('signupStatus');
+    if(!phone){ status.textContent = "Please enter a number."; return; }
+    fetch("https://script.google.com/macros/s/AKfycbx9Wj7ZBajq-M9xprCCds9C6HOvLUo3JhquE7sHKIKQvubLL9vxaFnwT4fWOX7jQasuxQ/exec", {
+      method: 'POST', mode: 'no-cors', headers: {'Content-Type':'text/plain'},
+      body: JSON.stringify({ phone: phone, consent: document.getElementById('signupConsent').checked, page: window.location.href, timestamp: new Date().toISOString() })
+    }).then(function(){
+      status.textContent = "Thank you! You're on the list.";
+      document.getElementById('signupForm').reset();
+    });
+  });
+</script>
     <footer>Scan again anytime for the latest menu</footer>
   </div>
 </body>
